@@ -2,7 +2,9 @@
 
 ## Requirement
 
-This code base `python3`, please make sure your machine installed `python3` and `pip3`.
+This code based on `python3`, please make sure your machine have installed `python3` and `pip3`.
+
+Then do this.
 
 ```bash
 pip3 install python-telegram-bot Pyyaml PyMySQL pynacl
