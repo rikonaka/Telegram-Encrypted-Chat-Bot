@@ -23,6 +23,7 @@ char emojid[] = {0xF0, 0x9F, 0x98, 0x92, 0X00};
 char emojie[] = {0xF0, 0x9F, 0x98, 0x93, 0X00};
 char emojif[] = {0xF0, 0x9F, 0x98, 0x98, 0X00};
 
+
 char semojilabel[] = "😜";
 char semoji0[] = "😚";
 char semoji1[] = "😁";
