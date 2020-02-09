@@ -1,0 +1,30 @@
+# before of running the bot you should create a file named `config.yaml`
+# the file should be the same of this one, but replacing sample variables with true data
+
+# the token of the bot you get from t.me/botfather (type: str)
+bot_token: 'token(str)'
+
+# a list containing the telegram ids of the admins of the bot (type: str)
+admins_id: 
+- 'user_id(str)'
+# (type: str)
+admins_name:
+- '@username(str)'
+
+# a group admin's channel name (type: str)
+admins_bot:
+- '@admis_bot_name(str)'
+
+error_log: '/var/log/encryptedchatbot_error.log'
+
+# sql setting
+sql_server: 'localhost'
+sql_user: 'encryptedchat'
+sql_password: '123456'
+sql_database: 'encryptedchat_db'
+sql_table_format: 'e_'
+sql_max_rows: 500000
+
+# others
+read_timeout: 6
+connect_timeout: 9
