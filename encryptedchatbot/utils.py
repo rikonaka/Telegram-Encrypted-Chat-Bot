@@ -11,6 +11,23 @@ from telegram import ParseMode
 import uuid
 
 
+def check_string(string):
+    '''Check the string.
+
+    Returns:
+        True: legal input.
+        False: not legal input.
+    '''
+
+    legal_char = ['0', '1', '2', '3', '4', '5', '6',
+                  '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
+    for c in string:
+        if c not in legal_char:
+            return False
+
+    return True
+
+
 def check_admin(uid_hash):
     '''Check the user which sent this message is admin or not.
 

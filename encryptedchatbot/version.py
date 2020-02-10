@@ -12,5 +12,7 @@ def bot_version():
     # start the v0.31 in 2019-10-17
     # version = '0.31'
     # start the v1.0 in 2019-11-16
-    version = '1.0'
+    # version = '1.0'
+    # start the v1.1 in 2020-2-9
+    version = '1.1'
     return version

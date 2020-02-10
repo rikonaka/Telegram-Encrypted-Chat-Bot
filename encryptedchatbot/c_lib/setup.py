@@ -21,15 +21,15 @@ setup(
 
 def main():
     setup(
-        name="emoji",
-        version="0.1",
-        description="Encode and decode the emoji string",
-        author="Name",
-        author_email="your_email@gmail.com",
+        name="libtecb",
+        version="0.2",
+        description="Telegram-Encrypted-Chat-Bot Encode and decode to emoji string",
+        author="Riko",
+        author_email="xxy1836@gmail.com",
         ext_modules=[
             Extension(
-                "emoji",
-                ["emojimodule.c"]
+                "libtecb",
+                ["libtecb.c"]
             )
         ]
     )

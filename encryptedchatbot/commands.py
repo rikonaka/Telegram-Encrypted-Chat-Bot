@@ -11,6 +11,7 @@ from encryptedchatbot.utils import only_admin
 from encryptedchatbot.utils import only_private_chat
 from encryptedchatbot.utils import is_maintenance
 from encryptedchatbot.utils import check_admin
+from encryptedchatbot.utils import check_string
 from encryptedchatbot import keyboards
 from encryptedchatbot import messages
 from encryptedchatbot import utils
@@ -180,6 +181,9 @@ def command_inline(update, context):
         except IndexError:
             return -1
 
+        if len(cipher_text_hash) == 0 or not check_string(cipher_text_hash):
+            return -1
+
         # Check the cipher_text.
         cipher_text = sql.sql_get_cipher_text(cipher_text_hash)
         # print('commands(cipher_text): ' + cipher_text)
@@ -219,14 +223,13 @@ def command_inline(update, context):
                 pass
             return -1
 
-        results.append(InlineQueryResultArticle(id=uuid_me, title='D-Result', description=plain_text,
+        results.append(InlineQueryResultArticle(id=uuid_me, title='De-Result', description=plain_text,
                                                 input_message_content=InputTextMessageContent(plain_text, parse_mode=ParseMode.HTML)))
         try:
             update.inline_query.answer(
                 results, cache_time=60, is_personal=True)
         except Exception:
             pass
-        return -1
 
     else:
         cipher_text = messages.symmetric_encrypt_inline(
@@ -240,6 +243,7 @@ def command_inline(update, context):
                     results, cache_time=60, is_personal=True)
             except Exception:
                 pass
+
             return -1
 
         switch_inline_query_str = 'seinline[%s]' % cipher_text_hash
@@ -256,10 +260,13 @@ def command_inline(update, context):
             except IndexError:
                 return -1
 
+            if len(cipher_data) == 0 or not check_string(cipher_data):
+                return -1
+
             emoji_text = encrypt.convert_str_to_emoji_c(cipher_data)
             # print(emoji_text)
             # emoji_text = 'sencrypted[%s]' % emoji_text
-            results.append(InlineQueryResultArticle(id=uuid_me, title='E-Result', description='id: %s' % str(uuid_me)[0:8],
+            results.append(InlineQueryResultArticle(id=uuid_me, title='En-Result', description='id: %s' % str(uuid_me)[0:8],
                                                     input_message_content=InputTextMessageContent(emoji_text, parse_mode=ParseMode.HTML), reply_markup=keyboard))
             try:
                 update.inline_query.answer(
@@ -267,7 +274,7 @@ def command_inline(update, context):
             except Exception:
                 pass
         else:
-            results.append(InlineQueryResultArticle(id=uuid_me, title='E-Result', description='id: %s' % str(uuid_me)[0:8],
+            results.append(InlineQueryResultArticle(id=uuid_me, title='En-Result', description='id: %s' % str(uuid_me)[0:8],
                                                     input_message_content=InputTextMessageContent(cipher_text, parse_mode=ParseMode.HTML), reply_markup=keyboard))
             try:
                 update.inline_query.answer(

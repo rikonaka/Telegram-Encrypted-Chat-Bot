@@ -12,6 +12,7 @@ from encryptedchatbot import config
 from encryptedchatbot.utils import only_admin
 from encryptedchatbot.utils import check_admin
 from encryptedchatbot.utils import is_maintenance
+from encryptedchatbot.utils import check_string
 from encryptedchatbot import sql
 from encryptedchatbot import encrypt
 
@@ -118,9 +119,20 @@ def symmetric_decrypt_message(update, context, text):
     except IndexError:
         return -1
 
+    if len(cipher_data) == 0:
+        return -1
+
     nonce_str_hash = cipher_data[0:64]
+    if not check_string(nonce_str_hash) or len(nonce_str_hash) == 0:
+        return -1
+
     secret_key_str_hash = cipher_data[64:128]
+    if not check_string(secret_key_str_hash) or len(secret_key_str_hash) == 0:
+        return -1
+
     cipher_text_str = cipher_data[128:-1] + cipher_data[-1]
+    if not check_string(cipher_text_str) or len(cipher_text_str) == 0:
+        return -1
 
     nonce_str = sql.sql_nonce_query(nonce_str_hash)
     secret_key_str = sql.sql_get_secret_key(secret_key_str_hash)
@@ -137,6 +149,9 @@ def symmetric_decrypt_message(update, context, text):
 
         elif 'photo[' in plain_text and ']' in plain_text:
             file_id = plain_text[6:-1]
+            if not check_string(file_id):
+                return -1
+
             update.message.reply_photo(photo=file_id)
             return 0
 
@@ -170,7 +185,7 @@ def asymmetric_decrypt_message(update, context, text):
         if config.private_key_dict[uid_hash] == 'decrypt':
             # Check the private key length.
             user_private_key_str = (str(message.text)).strip()
-            if len(user_private_key_str) != 64:
+            if len(user_private_key_str) != 64 or not check_string(user_private_key_str):
                 text = 'Please check your private key value.'
                 update.message.reply_text(
                     text=text, parse_mode=ParseMode.HTML)
@@ -222,9 +237,20 @@ def asymmetric_decrypt_message(update, context, text):
             cipher_data = text.split('aencrypted')[1][1:-1]
         except IndexError:
             return
+
+        if len(cipher_data) == 0:
+            return -1
+
         nonce_str_hash = cipher_data[0:64]
+        if not check_string(nonce_str_hash) or len(nonce_str_hash) == 0:
+            return -1
         target_uid_hash = cipher_data[64:128]
+        if not check_string(target_uid_hash) or len(target_uid_hash) == 0:
+            return -1
         cipher_text_str = cipher_data[128:-1] + cipher_data[-1]
+        if not check_string(cipher_text_str) or len(cipher_text_str) == 0:
+            return -1
+
         nonce_str = sql.sql_nonce_query(nonce_str_hash)
         config.private_key_dict[uid_hash] = 'decrypt'
         config.public_key_dict[uid_hash] = sql.sql_get_public_key(
@@ -553,9 +579,13 @@ def process_message_private(update, context):
                     update, context, message.text)
 
             elif 'seinline[' in message.text:
-                text = sql.sql_get_cipher_text(message.text)
-                symmetric_decrypt_message(
-                    update, context, text)
+
+                # text = sql.sql_get_cipher_text(message.text)
+                # symmetric_decrypt_message(
+                #     update, context, text)
+                text = '<b>Please use the inline mode to decrypted this message!</b>'
+                update.message.reply_text(
+                    text=text, parse_mode=ParseMode.HTML)
 
             elif sql.sql_get_emoji_mode(uid_hash):
                 symmetric_encrypt_message_emoji(

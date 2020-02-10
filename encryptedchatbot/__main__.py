@@ -32,11 +32,14 @@ def error_callback(update, context, error):
 
     dt = datetime.now()
     date = dt.strftime('%Y-%m-%d %I:%M:%S')
-    log_str = '%s: update %s caused error %s' % (date, update, error)
-    logger.warning(log_str)
+    try:
+        log_str = '%s: update %s caused error %s' % (date, update, error)
+        logger.warning(log_str)
 
-    with open(config.ERROR_LOG, 'a+') as fp:
-        fp.writelines('%s\n' % log_str)
+        with open(config.ERROR_LOG, 'a+') as fp:
+            fp.writelines('%s\n' % log_str)
+    except Exception:
+        pass
 
 
 def main():

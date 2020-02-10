@@ -8,15 +8,13 @@ from nacl.public import PrivateKey
 from nacl.public import PublicKey
 from nacl.public import Box
 from nacl.exceptions import CryptoError
-
-import emoji
-
 from encryptedchatbot import config
+import libtecb
 
 def detect_encrypted_emoji_c(input_emoji):
     '''Use the C module.
     '''
-    return emoji.detect(input_emoji)
+    return libtecb.detect(input_emoji)
 
 
 def detect_encrypted_emoji(input_emoji):
@@ -40,7 +38,7 @@ def convert_emoji_to_str_c(input_emoji):
     '''Use the C module.
     '''
 
-    return emoji.decode(input_emoji)
+    return libtecb.decode(input_emoji)
 
 
 def convert_emoji_to_str(input_emoji):
@@ -81,7 +79,7 @@ def convert_str_to_emoji_c(input_str):
     '''Use the C module.
     '''
 
-    return emoji.encode(input_str)
+    return libtecb.encode(input_str)
 
 
 def convert_str_to_emoji(input_str):
